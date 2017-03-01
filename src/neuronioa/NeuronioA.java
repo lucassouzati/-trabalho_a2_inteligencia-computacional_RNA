@@ -16,12 +16,12 @@ public class NeuronioA {
      */
     public static void main(String[] args) {
         // TODO code application logic here  int[][] x, float[] w, int[] d, float a, float e, int max_int
-        int [][]x = {{0,0,1,1},{0,1,0,1}};
-        double [][]w={{0.5,0.1,-0.6},{-0.2,0.7,0.1},{0.7,0.2,-0.2}};
+        int [][][]x = {{{1,1,0,0},{0,1,0,1}}, {{0,0,1,1},{1,0,1,0}}};
+        double [][]w={{0.5,0.2,-0.6},{0.5,0.3,0.6},{0.7,0.2,-0.2}};
         int [][]d= {{0,1,0,0},{0,0,1,0},{0,1,1,0}};
         
         
-        Perceptron p=new Perceptron(x,w,d,0.5,0,100000);
+        Perceptron p=new Perceptron(x,w,d,0.1,0,100000);
         p.treinar();
         
         

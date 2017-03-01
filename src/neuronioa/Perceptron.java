@@ -10,7 +10,7 @@ package neuronioa;
  * @author Tarcisio
  */
 public class Perceptron {
-    private int[][] x;
+    private int[][][] x;
     private double[][] w;
     private int[][]d;
     private double a, e;
@@ -20,13 +20,14 @@ public class Perceptron {
     
     private int[][] saidas;
 
-    public Perceptron(int[][] x, double[][] w, int[][] d, double a, double e, int max_int) {
+    public Perceptron(int[][][] x, double[][] w, int[][] d, double a, double e, int max_int) {
         this.x = x;
         this.w = w;
         this.d = d;
         this.a = a; //Taxa de aprendizagem
         this.e = e; //Margem de erro
         this.max_int = max_int; //Máximo de iterações
+        
         this.neuronios_ok = new boolean[w.length];
         
         this.saidas = new int[w.length][4]; // inicializando matriz de  saidas
@@ -57,12 +58,14 @@ public class Perceptron {
                 System.out.println("Iteração "+ epocas);
                 System.out.println("Neurônio " + linha + ": \n\n");
                 saidas_encontradas = 0;
+                //ordem = 0;
+                
                 if (!this.neuronios_ok[linha]){
-                    for (int i=0;i<this.x[0].length;i++){
+                    for (int i=0;i<this.x[linha][0].length;i++){
                         //x1*w1+x2*w2+w0 
                         if(linha < x.length)
                         {
-                            u=this.x[0][i]*this.w[linha][0] + this.x[1][i]*this.w[linha][1] + this.w[linha][2];
+                            u=this.x[linha][0][i]*this.w[linha][0] + this.x[linha][1][i]*this.w[linha][1] + this.w[linha][2];
 
                             //Calculando a saída
                             if (u>=0){
@@ -72,8 +75,8 @@ public class Perceptron {
                             }
 
                             //Mostrando a aprendizagem
-                            System.out.println("(" + this.x[0][i] + 
-                                    "  ," + this.x[1][i] + 
+                            System.out.println("(" + this.x[linha][0][i] + 
+                                    "  ," + this.x[linha][1][i] + 
                                     ")  ="+y  + "(esperado: "+ this.d[linha][i] +")"+
                                     "  w"+linha+"1="+ this.w[linha][0] +
                                      "  w"+linha+"2=" + this.w[linha][1] +
@@ -84,21 +87,21 @@ public class Perceptron {
                             //Comparando a saída obtida com a desejável
                             if((y==1)&&(this.d[linha][i]==0)){
                                 ajustar_pesos(false,ordem, linha); //Deve diminuir os pesos
-                                //ordem++;
+                               ordem++;
                                 continua=true;
                             }else if ((y==0)&&(this.d[linha][i]==1)){
 
                                 ajustar_pesos(true,ordem, linha); //Deve aumentar os pesos
-                                //ordem++;
+                               ordem++;
                                 continua=true;
                             }else
                             {
-                                this.saidas[linha][ordem] = y;
+                                this.saidas[linha][i] = y;
                                 saidas_encontradas++;
                             }
-                            ordem++;
+                           // ordem++;
                             
-                            if (ordem>=this.w.length){
+                            if (ordem>=this.w[linha].length){
                                 ordem=0;
                             }
                             System.out.println("_____________________________");
