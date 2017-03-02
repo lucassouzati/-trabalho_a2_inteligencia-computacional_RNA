@@ -5,12 +5,15 @@
  */
 package neuronioa;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Tarcisio
  */
 public class Perceptron {
-    private int[][][] x;
+    private int[][] x;
     private double[][] w;
     private int[][]d;
     private double a, e;
@@ -20,8 +23,10 @@ public class Perceptron {
     
     private int[][] saidas;
     private int[][] resultados_corretos;
+    
+    private List<Neuronio> neuronios;
 
-    public Perceptron(int[][][] x, double[][] w, int[][] d, double a, double e, int max_int) {
+    public Perceptron(int[][] x, double[][] w, int[][] d, double a, double e, int max_int) {
         this.x = x;
         this.w = w;
         this.d = d;
@@ -31,18 +36,24 @@ public class Perceptron {
         
         this.neuronios_ok = new boolean[w.length];
         
-        this.saidas = new int[w.length][4]; // inicializando matriz de  saidas
+        //this.neuronios.get(linha).getSaidas()int[w.length][4]; // inicializando matriz de  saidas
         this.resultados_corretos = new int[w.length][4]; // inicializando matriz de  saidas
         
-        for(int i = 0; i < saidas.length; i++){
-            for(int j = 0; j < saidas[i].length; j++){
-                this.saidas[i][j] = -1;
-            }
-        }
+//        for(int i = 0; i < saidas.length; i++){
+//            for(int j = 0; j < saidas[i].length; j++){
+//                this.neuronios.get(linha).getSaidas()= -1;
+//            }
+//        }
         
         for (int i = 0; i < w.length;i++)
         {
             this.neuronios_ok[i] = false;
+        }
+        this.neuronios = new ArrayList<Neuronio>();
+        for (int i = 0; i < w.length;i++)
+        {
+            Neuronio neuronio = new Neuronio(this.w[i], this.x, this.d[i], this.a);
+            this.neuronios.add(neuronio);
         }
     }
     
@@ -54,118 +65,62 @@ public class Perceptron {
         
         boolean continua=true;
         while ((epocas<this.max_int)&&(continua)){
-            continua=false;
-            for(int linha=0; linha<x.length; linha++){
+            //continua=false;
+            System.out.println("Época "+ epocas);
+            for(int linha=0; linha<neuronios.size(); linha++){
                 
-                System.out.println("Iteração "+ epocas);
-                System.out.println("Neurônio " + linha + ": \n\n");
-                saidas_encontradas = 0;
-                //ordem = 0;
-                
-                if (!this.neuronios_ok[linha]){
-                        for (int i=0;i<this.x[linha][0].length;i++){
-                            //x1*w1+x2*w2+w0 
-                            if(linha < x.length)
-                            {
-                                u=this.x[linha][0][i]*this.w[linha][0] + this.x[linha][1][i]*this.w[linha][1] + this.w[linha][2];
-
-                                //Calculando a saída
-                                if (u>=0){
-                                    y=1;
-                                }else{
-                                    y=0;
-                                }
-
-                                //Mostrando a aprendizagem
-                                System.out.println("(" + this.x[linha][0][i] + 
-                                        "  ," + this.x[linha][1][i] + 
-                                        ")  ="+y  + "(esperado: "+ this.d[linha][i] +")"+
-                                        "  w"+linha+"1="+ this.w[linha][0] +
-                                         "  w"+linha+"2=" + this.w[linha][1] +
-                                          "  w0=" + this.w[linha][2]);
-
-                                //System.out.println("Resultado esperado:" + this.d[linha][i]);
-
-                                //Comparando a saída obtida com a desejável -> nos neuronios anterioes nao precisa fazer comparacao
-//                                if((y==1)&&(this.d[linha][i]==0)){
-//                                    ajustar_pesos(false,ordem, linha); //Deve diminuir os pesos
-//                                   ordem++;
-//                                    continua=true;
-//                                }else if ((y==0)&&(this.d[linha][i]==1)){
-//
-//                                    ajustar_pesos(true,ordem, linha); //Deve aumentar os pesos
-//                                   ordem++;
-//                                    continua=true;
-//                                }else
-//                                {
-//                                    this.saidas[linha][i] = y;
-//                                    saidas_encontradas++;
-//                                }
-                                
-                                this.saidas[linha][i] = y;
-                               // ordem++;
-
-                                if (ordem>=this.w[linha].length){
-                                    ordem=0;
-                                }
-                                System.out.println("_____________________________");
-
-
-    //                        if(this.saidas[linha][0] != -1 && this.saidas[linha][1] != -1){
-    //                            this.neuronios_ok[linha] = true;
-    //                        }
-                        
-                            }else{
-                                u=this.saidas[0][i]*this.w[linha][0] + this.saidas[1][i]*this.w[linha][1] + this.w[linha][2];
-
-                                //Calculando a saída
-                                if (u>=0){
-                                    y=1;
-                                }else{
-                                    y=0;
-                                }
-                                
-                                //Mostrando a aprendizagem
-                                System.out.println("(" + this.x[linha][0][i] + 
-                                        "  ," + this.x[linha][1][i] + 
-                                        ")  ="+y  + "(esperado: "+ this.d[linha][i] +")"+
-                                        "  w"+linha+"1="+ this.w[linha][0] +
-                                         "  w"+linha+"2=" + this.w[linha][1] +
-                                          "  w0=" + this.w[linha][2]);
-
-                                //System.out.println("Resultado esperado:" + this.d[linha][i]);
-
-                                //Comparando a saída obtida com a desejável
-                                if((y==1)&&(this.d[linha][i]==0)){
-                                    ajustar_pesos(false,ordem, linha); //Deve diminuir os pesos
-                                   ordem++;
-                                    continua=true;
-                                }else if ((y==0)&&(this.d[linha][i]==1)){
-
-                                    ajustar_pesos(true,ordem, linha); //Deve aumentar os pesos
-                                   ordem++;
-                                    continua=true;
-                                }else{
-                                    saidas_encontradas++;
-                                }
-                            }
-                            
-                        }
-                        }
+                //Verifica se este neurônio já não está ok
+                if(!this.neuronios_ok[linha]){
+                    if(linha<neuronios.size() - 1){//Caso não seja o último neurônio
                    
-                    if (saidas_encontradas == 4)
-                    {
-                        this.neuronios_ok[linha] = true;
+                        System.out.println("Neurônio " + linha + ": \n\n");
+
+                        this.neuronios.get(linha).calcular();
+
+                        System.out.println("Saidas encontradas: [" + this.neuronios.get(linha).getSaidas()[0] + ", " + this.neuronios.get(linha).getSaidas()[1] + ", " + this.neuronios.get(linha).getSaidas()[2]+ ", " + this.neuronios.get(linha).getSaidas()[3] + "]");
+                        System.out.println("_____________________________");
+
+                        //Caso todas as saídas deste neurônio estejam de acordo com as desejadas, este neuronio está ok
+                        if(this.neuronios.get(linha).getSaidas_corretas()[0] && this.neuronios.get(linha).getSaidas_corretas()[1] && this.neuronios.get(linha).getSaidas_corretas()[2] && this.neuronios.get(linha).getSaidas_corretas()[3]){
+                                this.neuronios_ok[linha] = true;
+                        }
                     }
-                
-                System.out.println("Saidas encontradas: [" + this.saidas[linha][0] + ", " + this.saidas[linha][1] + ", " + this.saidas[linha][2]+ ", " + this.saidas[linha][3] + "]");
-                System.out.println("_____________________________");
+                    else{//Caso seja o último neurônio
+                        
+                        System.out.println("Neurônio " + linha + ": \n\n");
+                         
+                        int[][] entradas_ultimo_neuronio = new int[2][4];
+                        
+                        //Este recebe como entrada, as saídas dos últimos neurônios
+                        entradas_ultimo_neuronio[0] = this.neuronios.get(0).getSaidas();
+                        entradas_ultimo_neuronio[1] = this.neuronios.get(1).getSaidas();
+                        this.neuronios.get(linha).setEntradas(entradas_ultimo_neuronio);
+                        
+                        this.neuronios.get(linha).calcular();
+                        
+                        System.out.println("Saidas encontradas: [" + this.neuronios.get(linha).getSaidas()[0] + ", " + this.neuronios.get(linha).getSaidas()[1] + ", " + this.neuronios.get(linha).getSaidas()[2]+ ", " + this.neuronios.get(linha).getSaidas()[3] + "]");
+                        System.out.println("_____________________________");
+                        
+                         if(this.neuronios.get(linha).getSaidas_corretas()[0] && this.neuronios.get(linha).getSaidas_corretas()[1] && this.neuronios.get(linha).getSaidas_corretas()[2] && this.neuronios.get(linha).getSaidas_corretas()[3]){
+                                this.neuronios_ok[linha] = true;
+                        }
+                    }
                 }
+                
+            }
+            epocas++;
+            System.out.println("_____________________________");
+            continua = false;
+            
+            //Quando todos neurônios estiverem ok, continua fica como falso e o algoritmo para
+            for(int i = 0; i< this.neuronios_ok.length; i++){
+                if(!neuronios_ok[i])
+                    continua = true;
             }
             
-           epocas++;
+           
         }
-    
+    }
     
     private void ajustar_pesos(boolean aumentar, int ordem, int linha){
         if (aumentar){

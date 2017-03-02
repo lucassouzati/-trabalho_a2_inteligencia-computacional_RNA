@@ -35,11 +35,17 @@ public class Neuronio {
                 //Mostrando a aprendizagem
                 System.out.println("(" + this.entradas[0][i] + 
                         "  ," + this.entradas[1][i] + 
-                        ")  ="+y  +
+                        ")  ="+y  + "(esperado:"+ this.saidas_desejadas[i] +" )"+
                         "  w1="+ this.pesos[0] +
                          "  w2=" + this.pesos[1] +
                           "  w0=" + this.pesos[2]);
                 
+                
+                if(this.saidas[i] != y){
+                    this.saidas[i] = y;
+                    this.saidas_corretas[i] = false;
+                }
+                    
                 //Comparando a saída obtida com a desejável
                 if((y==1)&&(this.saidas_desejadas[i]==0)){
                     ajustar_pesos(false); //Deve diminuir os pesos
@@ -49,8 +55,10 @@ public class Neuronio {
                     ajustar_pesos(true); //Deve aumentar os pesos
                     ordem++;
                     //continua=true;
-                }else
-                {
+                }
+                else
+                {   
+                    this.saidas[i] = y;
                     this.saidas_corretas[i] = true;
                 }
                 if (ordem>=this.pesos.length){
@@ -77,6 +85,9 @@ public class Neuronio {
         this.saidas = new int[4];
         this.saidas_desejadas = saidas_desejadas;
         this.saidas_corretas = new boolean[4];
+//        for(int i = 0; i < this.saidas_corretas.length; i++){
+//            this.saidas_corretas[i] = false;
+//        }
         this.ordem = 0;
         this.a = a;
     }
