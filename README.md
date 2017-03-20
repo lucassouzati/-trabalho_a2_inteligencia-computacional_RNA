@@ -1,5 +1,9 @@
-<<<<<<< HEAD
-# trabalho_a2_inteligencia-computacional_rede-neural
-=======
-# -trabalho_a2_inteligencia-computacional_RNA
->>>>>>> 3b0c861613bf9f0e845f35db728969a2c0b66a17
+# Trabalho A2 da disciplina de Inteligência Computacional
+
+Exemplo de algoritmo de Rede Neural com aprendizado supervisionado. 
+
+## Professor: 
+Tarcísio Barro Marques
+## Alunos:
+Lucas de Souza Siqueira
+Rodrigo Zacarias Oliveira
