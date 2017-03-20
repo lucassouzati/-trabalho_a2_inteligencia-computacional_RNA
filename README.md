@@ -5,5 +5,4 @@ Exemplo de algoritmo de Rede Neural com aprendizado supervisionado.
 ## Professor: 
 Tarcísio Barro Marques
 ## Alunos:
-Lucas de Souza Siqueira
-Rodrigo Zacarias Oliveira
+Lucas de Souza Siqueira, Rodrigo Zacarias Oliveira
