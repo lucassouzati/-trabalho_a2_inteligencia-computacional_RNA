@@ -73,7 +73,7 @@ public class Perceptron {
                 if(!this.neuronios_ok[linha]){
                     if(linha<neuronios.size() - 1){//Caso não seja o último neurônio
                    
-                        System.out.println("Neurônio " + linha + ": \n\n");
+                        System.out.println("Neurônio " + (linha+1) + ": \n\n");
 
                         this.neuronios.get(linha).calcular();
 
@@ -87,7 +87,7 @@ public class Perceptron {
                     }
                     else{//Caso seja o último neurônio
                         
-                        System.out.println("Neurônio " + linha + ": \n\n");
+                        System.out.println("Neurônio " + (linha+1) + ": \n\n");
                          
                         int[][] entradas_ultimo_neuronio = new int[2][4];
                         
